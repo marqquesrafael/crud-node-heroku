@@ -18,6 +18,7 @@ const UserController = {
   async show(req, res) {
     try {
       const { id } = req.params;
+      const {header = ""} = req.headers;
       if (!id) {
         return res.status(400).json({ msg: "Id inválido!" });
       }
@@ -26,8 +27,10 @@ const UserController = {
         .where("usuario.id", id)
         .select(["usuario.nome", "usuario.numero", "tipo.descricao"])
         .first();
+        res.setHeader("header", header)
       return res.json(usuarios);
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ msg: "Erro interno" });
     }
   },
